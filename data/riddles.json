@@ -1,6 +1,47 @@
-[
-    {"question": "Who?", "answer": "doctor"},
-    {"question": "Why?", "answer": "why not"},
-    {"question": "When?", "answer": "future"},
-    {"question": "What?", "answer": "watt"}
-]
+[{
+	"question": "Germany",
+	"choices": [
+		"a",
+		"b",
+		"c",
+		"d"
+	],
+	"answer": [
+		"berlin",
+		"rome",
+		"dublin",
+		"prague"
+	],
+	"correct": "a"
+}, {
+	"question": "Ireland",
+	"choices": [
+		"a",
+		"b",
+		"c",
+		"d"
+	],
+	"answer": [
+		"berlin",
+		"rome",
+		"dublin",
+		"prague"
+	],
+	"correct": "a"
+},
+{
+	"question": "Italy",
+	"choices": [
+		"a",
+		"b",
+		"c",
+		"d"
+	],
+	"answer": [
+		"berlin",
+		"rome",
+		"dublin",
+		"prague"
+	],
+	"correct": "a"
+}]

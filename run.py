@@ -1,8 +1,7 @@
 import json
 import os
 
-from flask import (
-    Flask, session, render_template, flash, request, redirect, url_for)
+from flask import Flask, session, render_template, flash, request, redirect, url_for
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET", "not a secret")
@@ -10,6 +9,14 @@ app.secret_key = os.getenv("SECRET", "not a secret")
 MAX_ATTEMPTS = 3
 with open("data/riddles.json") as riddle_file:
     RIDDLES = json.load(riddle_file)
+
+file_handler = open('data/riddles.json', 'r')
+parsed_data = json.loads(file_handler.read())
+print (parsed_data)
+
+questions = parsed_data['choices']
+print (questions)
+
 
 high_score = {
     "name": "nobody",
@@ -36,9 +43,9 @@ def riddle():
     if "player" not in session:
         return redirect(url_for("index"))
 
-    if request.method == "POST" and session["riddle_num"] < len(RIDDLES):
+    if request.method == "POST" and session["riddle_num"] < len(RIDDLES.question):
         previous_riddle = RIDDLES[session["riddle_num"]]
-        if request.form["answer"].lower() == previous_riddle["answer"]:
+        if request.form["answer"].lower() == previous_riddle["correct"]:
             session["riddle_num"] += 1
             session["score"] += 1
             if session["riddle_num"] < len(RIDDLES):
@@ -67,10 +74,32 @@ def riddle():
                                highscorer=high_score["name"])
 
     new_riddle = RIDDLES[session["riddle_num"]]
+    
+    with open("data/riddles.json") as riddle_file:
+        file = json.load(riddle_file)
+
+        answers = []
+        question = []
+        correct_answer = []
+        choices = []
+
+        for item in file:
+            question = item["question"]
+            answers = str(item["answer"])
+            choices = str(item["choices"])
+            correct_answer = str(item["correct"])
+            print("question is: " + question)
+            print("choices are: " + choices)
+            print("answers are: " + answers)
+            print("correct answer is: " + correct_answer)
+
+
     return render_template(
         "riddle.html", player=session["player"],
-        question=new_riddle["question"], riddle_num=session["riddle_num"])
+        question=question, riddle_num=session["riddle_num"], file=file,
+        answers=answers, correct_answer=correct_answer, choices=choices)
 
+    
 
 if __name__ == "__main__":
     app.run(os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8080")),
